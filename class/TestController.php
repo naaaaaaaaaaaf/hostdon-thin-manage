@@ -8,7 +8,7 @@ class TestController extends Abstracts
 {
     public function index(){
         $param = ['name'];
-        $temp = self::twig()->load('index.html');
+        $temp = self::twig()->load('email.html');
         return $temp->render();
     }
 }

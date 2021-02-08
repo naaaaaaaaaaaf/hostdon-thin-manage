@@ -1,7 +1,10 @@
 <?php
 require_once 'vendor/autoload.php';
 $dispatcher= FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $router) {
-    $router->addRoute(['GET','POST'], '/', 'Hostdon\TestController::index');
+    //$router->addRoute(['GET','POST'], '/', 'Hostdon\TestController::index');
+    $router->addRoute(['GET'], '/registration', 'Hostdon\RegistrationController::index');
+    $router->addRoute(['POST'], '/registration', 'Hostdon\RegistrationController::email_post');
+
 });
 
 // HTTPメソッドとUILを取得する
