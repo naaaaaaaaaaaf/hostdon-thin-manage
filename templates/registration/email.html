@@ -1,0 +1,27 @@
+{% extends 'registration/base.html' %}
+
+{% block content %}
+<h3>Hostdon 仮登録フォーム</h3>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">仮登録</a></li>
+        <li class="breadcrumb-item active">メール送信</li>
+        <li class="breadcrumb-item active">本登録</li>
+    </ol>
+</nav>
+<h4 class="mt-3">仮登録フォーム</h4>
+
+<form action="" method="post" name="form">
+    <div class="form-group">
+        <label>登録するメールアドレス</label>
+        <div class="input-group">
+            <input class="form-control" name="email" placeholder="メールアドレス" size="50" type="email" required>
+            <input type="hidden" name="token" value="{{ token }}">
+        </div>
+        <br>
+        <p>
+            <a href="policy.html">プライバシーポリシー</a>と<a href="tos.html">利用規約</a>をご確認下さい。</p>
+        <input type="submit" class="btn btn-primary" name="submit" value="送信">
+    </div>
+</form>
+{% endblock %}
