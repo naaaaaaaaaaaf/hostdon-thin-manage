@@ -9,12 +9,13 @@ use RuntimeException;
 class CsrfValidator
 {
     const HASH_ALGO = 'sha256';
-
+    public function __construct(){
+        if (session_status() === PHP_SESSION_NONE) {
+            @session_start();
+        }
+    }
     public static function generate()
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            throw new BadMethodCallException('Session is not active.');
-        }
         return hash(self::HASH_ALGO, session_id());
     }
 
