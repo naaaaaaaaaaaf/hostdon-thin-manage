@@ -15,9 +15,9 @@ class RegistrationController extends Abstracts
     {
         $_SESSION['token'] = CsrfValidator::generate();
         $temp = self::twig()->load('registration/email.html');
-        $messages = (new MessageConstructs)->add_message('メールアドレスを入力してください','info');
+        $messages[] = (new MessageConstructs)->add_message('メールアドレスを入力してください','info');
 
-        return $temp->render(['token' => $_SESSION['token']]);
+        return $temp->render(['token' => $_SESSION['token'], 'messages' => $messages]);
     }
     public function email_post(): string
     {
