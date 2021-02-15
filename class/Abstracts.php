@@ -3,7 +3,6 @@
 
 namespace Hostdon;
 
-use Illuminate\Database\Capsule\Manager as Capsule;
 
 class Abstracts
 {
