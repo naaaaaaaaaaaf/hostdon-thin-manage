@@ -17,7 +17,7 @@ class DatabaseLoader
 
     function __construct()
     {
-        $dotenv = Dotenv::createImmutable(__DIR__.'../');
+        $dotenv = Dotenv::createImmutable(__DIR__.'/../');
         $dotenv->load();
         $capsule = new Capsule;
 
