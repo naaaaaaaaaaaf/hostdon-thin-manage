@@ -4,6 +4,7 @@
 namespace Hostdon;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\ParallelTesting;
 
 
 class RegistrationController extends Abstracts
@@ -52,4 +53,22 @@ class RegistrationController extends Abstracts
         $temp = self::twig()->load('registration/email.html');
         return $temp->render(['token' => $_SESSION['token'], 'messages' => $messages]);
     }
+    public function verifyToken($token){
+        $_SESSION['token'] = CsrfValidator::generate();
+        $messenger = new MessageConstructs();
+
+        //Tokenチェック
+        $db = new DatabaseLoader();
+        $result = $db->db()->table('pre_member')->select('*')->where('token','=',$token['token'])->where('flag','=',False)->whereRaw('date > now() - interval 24 hour')->get()->toArray();
+        if(!$result){
+            $messages[] = $messenger->add_message('すでに登録済み、若しくは有効期限切れです。最初からやりなおしてください','warning');
+            $temp = self::twig()->load('registration/error.html');
+            return $temp->render(['messages' => $messages]);
+        }
+        $_SESSION['mail']=$result[0]->mail;
+        //本登録フォーム表示
+        $temp = self::twig()->load('registration/form.html');
+        return $temp->render(['token' => $_SESSION['token'] ]);
+    }
+
 }

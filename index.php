@@ -9,6 +9,7 @@ $dispatcher= FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $route
     //$router->addRoute(['GET','POST'], '/', 'Hostdon\TestController::index');
     $router->addRoute(['GET'], '/registration', 'Hostdon\RegistrationController::index');
     $router->addRoute(['POST'], '/registration', 'Hostdon\RegistrationController::email_post');
+    $router->addRoute(['GET'], '/registration/verify-token/{token:[0-9a-zA-Z]+}', 'Hostdon\RegistrationController::verifyToken');
 
 });
 

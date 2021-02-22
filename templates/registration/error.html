@@ -1,0 +1,9 @@
+{% extends 'registration/base.html' %}
+
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+{{ message|raw }}
+{% endfor %}
+{% endif %}
+{% endblock %}
