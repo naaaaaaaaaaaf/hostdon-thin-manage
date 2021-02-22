@@ -1,5 +1,10 @@
 <?php
+
+use Dotenv\Dotenv;
+
 require_once 'vendor/autoload.php';
+$dotenv = Dotenv::createImmutable(__DIR__);
+$dotenv->load();
 $dispatcher= FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $router) {
     //$router->addRoute(['GET','POST'], '/', 'Hostdon\TestController::index');
     $router->addRoute(['GET'], '/registration', 'Hostdon\RegistrationController::index');
