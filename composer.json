@@ -5,7 +5,9 @@
         "illuminate/database": "^8.27",
         "vlucas/phpdotenv": "^5.3",
         "genkgo/mail": "^2.7",
-        "nesbot/carbon": "^2.45"
+        "nesbot/carbon": "^2.45",
+        "stripe/stripe-php": "^7.75",
+        "vlucas/valitron": "^1.4"
     },
     "autoload": {
         "psr-4": {
