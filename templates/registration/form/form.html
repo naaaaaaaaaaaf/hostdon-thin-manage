@@ -1,0 +1,103 @@
+{% extends 'registration/form/base.html' %}
+
+{% block content %}
+
+<h3 class="mt-3">Hostdon 登録フォーム</h3>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Step 1 請求先情報のご入力</a></li>
+        <li class="breadcrumb-item active">Step 2 パスワードのご入力</li>
+        <li class="breadcrumb-item active">Step 3 クレジットカード情報のご入力</li>
+    </ol>
+</nav>
+
+<div class="container mt-5 p-lg-5 bg-light">
+    {% if messages %}
+    {% for message in messages %}
+    {% for value in message %}
+    {{value}}
+    {% endfor %}
+    {% endfor %}
+    {% endif %}
+    <form action="" method="post" name="form" class="h-adr" id="payment-form">
+        <div class="form-group">
+
+            <!-- Step1 -->
+            <div class="form-group row" id="step1">
+                <label for="inputPassword" class="col-sm-2 col-form-label">パスワード</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" name="password" id="inputPassword" placeholder="パスワード"
+                           required="required">
+                    <small id="passwordHelpBlock" class="form-text text-muted">パスワードは8～126文字以内で入力してください。</small>
+                </div>
+            </div>
+
+            <!-- Step2 -->
+            <div id="step2">
+                <div class="form-row row mb-3">
+                    <label for="inputName" class="col-sm-2 col-form-label">お名前</label>
+                    <div class="col-sm-10 ">
+                        <input type="text" class="form-control" name="name" id="inputName" placeholder="山田太郎"
+                               required="required">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-3 mb-3">
+                        <label for="inputAddress01">郵便番号(7桁)</label>
+                        <span class="p-country-name" style="display:none;">Japan</span>
+                        <input type="text" name="zip01" maxlength="8" class="form-control p-postal-code" id="inputAddress01"
+                               placeholder="1030013" required="required">
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <label for="inputAddress02">都道府県</label>
+                        <input type="text" name="pref01" id="inputAddress02" class="form-control p-region" placeholder="東京都"
+                               required="required">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="inputAddress03">住所(市区町村)</label>
+                        <input type="text" name="addr01" class="form-control p-locality" id="inputAddress03"
+                               placeholder="中央区日本橋人形町" required="required">
+                    </div>
+                    <div class="col-md-12 mb-3">
+                        <label for="inputAddress04">住所(番地以降)</label>
+                        <input type="text" name="addr02" class="form-control p-street-address p-extended-address" id="inputAddress04" placeholder="1-1"
+                               required="required">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step3 -->
+            <div id="step3">
+                <label for="card-element">
+                    登録するカード番号
+                    <img src="templates/img/test.png">
+                </label>
+                <div id="card-errors"></div>
+                <div id="card-element" class="row md-3">
+                    <div class="field mb-1 col-md-12">
+                        <div id="card-number"></div>
+                    </div>
+                    <div class="field mb-1 col-md-6">
+                        <div id="card-expiry"></div>
+                    </div>
+                    <div class="field mb-1 col-md-6">
+                        <div id="card-cvc"></div>
+                    </div>
+                </div>
+
+                <label class="mt-3">
+                    <a href="policy.html">プライバシーポリシー</a>と<a
+                        href="tos.html">利用規約</a>をご確認下さい。クレジットカード・デビットカード・住所等の情報は決済代行会社であるStripeが保持します。
+                </label>
+            </div>
+            <div class="text-right">
+                <input type="hidden" name="token" value="{{ token }}">
+                <input type="button" id="back" value="前へ" onclick="clickBtn1()" class="btn btn-primary "/>
+                <input type="button" id="next" value="次へ" onclick="clickBtn2()" class="btn btn-primary "/>
+                <input id="post" value="送信" type="submit" class="btn btn-primary "/>
+            </div>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
+    <title>Hostdon - Mastodonのホスティングサービス</title>
+    <!-- Stripe -->
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://yubinbango.github.io/yubinbango/yubinbango.js" charset="UTF-8"></script>
+
+</head>
+<body>
+<div class="container">
+    {% block content %}{% endblock %}
+</div>
+<script>
+    const stripe = Stripe("{{ stripe_public_key }}");
+</script>
+<script>
+    //初期表示は非表示
+    const p1 = document.getElementById("step1");
+    const p2 = document.getElementById("step2");
+    const p3 = document.getElementById("step3");
+
+    const back = document.getElementById("back");
+    const next = document.getElementById("next");
+    const post = document.getElementById("post");
+
+    p1.style.display = "block";
+    p2.style.display = "none";
+    p3.style.display = "none";
+    back.style.display = "none";
+    post.style.display = "none";
+
+    function clickBtn2() {
+        if (p1.style.display === "block") {
+            p1.style.display = "none";
+            p2.style.display = "block";
+
+            back.style.display = "inline-block";
+        } else if (p2.style.display === "block") {
+            p2.style.display = "none";
+            p3.style.display = "block";
+
+            post.style.display = "inline-block";
+            next.style.display = "none";
+        }
+    }
+
+    function clickBtn1() {
+
+        if (p2.style.display === "block") {
+            p1.style.display = "block";
+            p2.style.display = "none";
+
+            back.style.display = "none";
+        } else if (p3.style.display === "block") {
+            p2.style.display = "block";
+            p3.style.display = "none";
+
+            post.style.display = "none";
+            next.style.display = "inline-block";
+        }
+    }
+    // Create an instance of Elements.
+    const elements = stripe.elements();
+
+    const style = {
+        base: {
+            color: '#32325d',
+            fontSize: '16px',
+            '::placeholder': {
+                color: '#aab7c4'
+            }
+        },
+        invalid: {
+            color: '#fa755a',
+            iconColor: '#fa755a'
+        }
+    };
+
+    const cardNumber = elements.create('cardNumber', { style: style });
+    cardNumber.mount('#card-number');
+    const cardExpiry = elements.create('cardExpiry', { style: style });
+    cardExpiry.mount('#card-expiry');
+
+    // カードのCVC入力
+    const cardCvc = elements.create('cardCvc', { style: style });
+    cardCvc.mount('#card-cvc');
+    // Handle real-time validation errors from the card Element.
+    cardNumber.addEventListener('change', function (event) {
+        const displayError = document.getElementById('card-errors');
+        if (event.error) {
+            displayError.insertAdjacentHTML('afterbegin', '<div class="alert alert-danger" role="alert">' + event.error.message + '</div>')
+        }
+    });
+    // Handle form submission.
+    var form = document.getElementById('payment-form');
+    form.addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        stripe
+            .createToken(cardNumber)
+            .then(function (result) {
+                if (result.error) {
+                    // Inform the user if there was an error.
+                    var errorElement = document.getElementById('card-errors');
+                    errorElement.textContent = result.error.message;
+                } else {
+                    // Send the token to your server.
+                    stripeTokenHandler(result.token);
+                }
+            });
+    });
+
+    function stripeTokenHandler(token) {
+        var form = document.getElementById('payment-form');
+        var hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.setAttribute('name', 'stripeToken');
+        hiddenInput.setAttribute('value', token.id);
+        form.appendChild(hiddenInput);
+        form.submit();
+    }
+</script>
+<style>
+    .StripeElement {
+        box-sizing: border-box;
+        height: 40px;
+        padding: 10px 12px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        background-color: white;
+        box-shadow: 0 1px 3px 0 #e6ebf1;
+        -webkit-transition: box-shadow 150ms ease;
+        transition: box-shadow 150ms ease;
+    }
+
+    .StripeElement--focus {
+        box-shadow: 0 1px 3px 0 #cfd7df;
+    }
+
+    .StripeElement--invalid {
+        border-color: #fa755a;
+    }
+
+    .StripeElement--webkit-autofill {
+        background-color: #fefde5 !important;
+    }
+</style>
