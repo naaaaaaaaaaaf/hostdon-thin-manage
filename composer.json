@@ -7,7 +7,8 @@
         "genkgo/mail": "^2.7",
         "nesbot/carbon": "^2.45",
         "stripe/stripe-php": "^7.75",
-        "vlucas/valitron": "^1.4"
+        "vlucas/valitron": "^1.4",
+      "ext-http": "*"
     },
     "autoload": {
         "psr-4": {
