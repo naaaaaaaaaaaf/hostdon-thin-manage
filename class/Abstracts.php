@@ -7,7 +7,8 @@ namespace Hostdon;
 class Abstracts
 {
 
-    protected function twig(){
+    protected function twig(): \Twig\Environment
+    {
        $loader = new \Twig\Loader\FilesystemLoader('templates');
         return new \Twig\Environment($loader, [
             'cache' => 'cache',

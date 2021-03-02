@@ -14,12 +14,12 @@ class CsrfValidator
             @session_start();
         }
     }
-    public static function generate()
+    public static function generate(): string
     {
         return hash(self::HASH_ALGO, session_id());
     }
 
-    public static function validate($token, $throw = false)
+    public static function validate($token, $throw = false): bool
     {
         $success = self::generate() === $token;
         if (!$success && $throw) {

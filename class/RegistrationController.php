@@ -4,11 +4,7 @@
 namespace Hostdon;
 
 use Carbon\Carbon;
-use http\Exception;
-use Illuminate\Support\Facades\ParallelTesting;
-use Stripe\Customer;
 use Stripe\Exception\ApiErrorException;
-use Stripe\Stripe;
 use Stripe\StripeClient;
 use Valitron\Validator;
 
@@ -83,8 +79,6 @@ class RegistrationController extends Abstracts
     public function registration(): string
     {
         session_start();
-        $messenger = new MessageConstructs();
-
         if(!CsrfValidator::validate($_POST['token'])){
             exit();
         }
@@ -131,7 +125,7 @@ class RegistrationController extends Abstracts
                     ['address' => ['city' => $_POST['addr01'],'country'=>'JP','line1'=>$_POST['addr02'],'postal_code'=>$_POST['zip01'],'state'=>$_POST['pref01']],'name'=>$_POST['name'] ]
                 );
 
-            } catch (ApiErrorException $e) {
+            } catch (ApiErrorException) {
                 $temp = self::twig()->load('registration/form/error.html');
                 return $temp->render();
             }
