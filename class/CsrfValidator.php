@@ -11,7 +11,7 @@ class CsrfValidator
     const HASH_ALGO = 'sha256';
     public function __construct(){
         if (session_status() === PHP_SESSION_NONE) {
-            @session_start();
+            die();
         }
     }
     public static function generate(): string
