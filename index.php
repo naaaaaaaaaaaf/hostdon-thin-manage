@@ -7,6 +7,8 @@ $dotenv = Dotenv::createImmutable(__DIR__);
 $dotenv->load();
 $dispatcher= FastRoute\simpleDispatcher(function(FastRoute\RouteCollector $router) {
     $router->addRoute(['GET','POST'], '/', 'Hostdon\Manage\ManageController::index');
+    $router->addRoute(['GET'], '/login', 'Hostdon\Manage\LoginController::get_login');
+    $router->addRoute(['POST'], '/login', 'Hostdon\Manage\LoginController::post_login');
     $router->addRoute(['GET'], '/registration', 'Hostdon\RegistrationController::index');
     $router->addRoute(['POST'], '/registration', 'Hostdon\RegistrationController::email_post');
     $router->addRoute(['GET'], '/registration/{token:[0-9a-zA-Z]+}', 'Hostdon\RegistrationController::viewForm');
