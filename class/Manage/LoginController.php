@@ -24,7 +24,7 @@ class LoginController extends Abstracts
         if (!CsrfValidator::validate($_POST['token'])) {
             exit();
         }
-        $messages = new MessageConstructs();
+        $messenger = new MessageConstructs();
         $v = new Validator($_POST);
         $v->rule('required', ['email', 'password'])->message('{field}は必須です。');
         //$v->rule('optional', ['digit']);
@@ -37,17 +37,16 @@ class LoginController extends Abstracts
             //'digit' => '認証コード'
         ));
         if (!$v->validate()) {
-            $data = $messages->reconstruct_message($v->errors(),'warning');
+            $data = $messenger->reconstruct_message($v->errors(),'warning');
             $temp = self::LoadTwig('manage/login.html');
             return $temp->render(['messages' => $data,'token' => CsrfValidator::generate()]);
         }
         $db = new DatabaseLoader();
         $result = $db->db()->table('member')->select('*')->where('mail', $_POST['email'])->get()->toArray();
         if($result && password_verify($_POST['password'], $result[0]->password)){
-            echo 'hoge';
-            //$check->redirect_logined_session($_POST['email'],$result[0]->cusid);
+            $check->redirect_logined_session($_POST['email'],$result[0]->cusid);
         }else{
-            $messages[] = 'gue-';
+            $messages[] = $messenger->add_message('メールアドレスまたはパスワードが違います','warning');
             $temp = self::LoadTwig('manage/login.html');
             return $temp->render(['messages' => $messages,'token' => CsrfValidator::generate()]);
         }
